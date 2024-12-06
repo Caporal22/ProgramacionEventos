@@ -14,14 +14,16 @@ public class Usuario {
     private String usuario;
     private String tipo; 
     private boolean activo;
+    private Horario horario;
     
 
-    public Usuario(String nombre, String contraseña, String usuario, String tipo, boolean activo) {
+    public Usuario(String nombre, String contraseña, String usuario, String tipo, boolean activo, Horario horario ) {
         this.nombre = nombre;
         this.contraseña = contraseña;
         this.usuario = usuario;
         this.tipo = tipo;
         this.activo = activo;
+        this.horario = horario;
         
     }
 
@@ -65,9 +67,13 @@ public class Usuario {
         this.activo = activo;
     }
 
+    public Horario getHorario() {
+        return horario;
+    }
+
+    public void setHorario(Horario horario) {
+        this.horario = horario;
+    }
+
    
-    
-    
-    
-    
 }

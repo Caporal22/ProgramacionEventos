@@ -6,19 +6,29 @@ package PRINCIPAL;
 
 import Clases.ListaEnlazada;
 import Clases.Usuario;
+import java.util.*;
 
 /**
  *
  * @author karol
  */
-public class frmMenuPrincipal extends javax.swing.JFrame {
-private ListaEnlazada listaUsuarios;
+public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
+    String hora, min, seg, ampm;
+    Calendar calendario;
+    Thread h1;
+
+    private ListaEnlazada listaUsuarios;
     /**
      * Creates new form frmMenuPrincipal
      */
     public frmMenuPrincipal(ListaEnlazada listaUsuarios ) {
         initComponents();
         this.listaUsuarios = listaUsuarios;
+        h1 = new Thread(this);
+        h1.start();
+
+
+
         
     }
 
@@ -33,6 +43,7 @@ private ListaEnlazada listaUsuarios;
 
         jmcMenu = new javax.swing.JDesktopPane();
         jButton1 = new javax.swing.JButton();
+        lblReloj = new javax.swing.JLabel();
         jMenuBar2 = new javax.swing.JMenuBar();
         Empleados = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -51,23 +62,34 @@ private ListaEnlazada listaUsuarios;
             }
         });
 
+        lblReloj.setFont(new java.awt.Font("Segoe UI", 3, 18)); // NOI18N
+        lblReloj.setForeground(new java.awt.Color(255, 255, 255));
+
         jmcMenu.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jmcMenu.setLayer(lblReloj, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jmcMenuLayout = new javax.swing.GroupLayout(jmcMenu);
         jmcMenu.setLayout(jmcMenuLayout);
         jmcMenuLayout.setHorizontalGroup(
             jmcMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jmcMenuLayout.createSequentialGroup()
-                .addContainerGap(718, Short.MAX_VALUE)
+                .addGap(59, 59, 59)
+                .addComponent(lblReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 654, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(20, 20, 20))
         );
         jmcMenuLayout.setVerticalGroup(
             jmcMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jmcMenuLayout.createSequentialGroup()
-                .addContainerGap(619, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap())
+            .addGroup(jmcMenuLayout.createSequentialGroup()
+                .addContainerGap(580, Short.MAX_VALUE)
+                .addGroup(jmcMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jmcMenuLayout.createSequentialGroup()
+                        .addComponent(jButton1)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jmcMenuLayout.createSequentialGroup()
+                        .addComponent(lblReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(26, 26, 26))))
         );
 
         Empleados.setText("Empleados");
@@ -108,7 +130,9 @@ private ListaEnlazada listaUsuarios;
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jmcMenu)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jmcMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,47 +159,17 @@ private ListaEnlazada listaUsuarios;
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
+       frmMEmpleados em = new frmMEmpleados(listaUsuarios);
+       jmcMenu.add(em);
+       em.setVisible(true);
+       
+        
     }//GEN-LAST:event_jMenuItem2ActionPerformed
     
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        ListaEnlazada listaUsuarios = new ListaEnlazada();
-        
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(frmMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(frmMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(frmMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(frmMenuPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                frmMenuPrincipal nm =new frmMenuPrincipal(listaUsuarios);
-                nm.setVisible(true);
-            }
-        });
-    }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JMenu Empleados;
     public static javax.swing.JMenu Inventario;
@@ -187,5 +181,44 @@ private ListaEnlazada listaUsuarios;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     public static javax.swing.JDesktopPane jmcMenu;
+    private javax.swing.JLabel lblReloj;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void run() {
+        
+        Thread ct = Thread.currentThread();
+
+        while (ct == h1) {
+            calcula();
+            lblReloj.setText(hora + ":" + min + ":" + seg + " " + ampm);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException error) {
+            }
+        }
+
+
+    }
+
+    private void calcula() {
+         Calendar calendario = new GregorianCalendar();
+        Date fechaHoraactual = new Date();
+        calendario.setTime(fechaHoraactual);
+        ampm = calendario.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM";
+        if (ampm.equals("PM")) {
+            int h = calendario.get(Calendar.HOUR_OF_DAY) - 12;
+            hora = h > 9 ? "" + h : "0" + h;
+            if(h==00){
+                   hora="12";
+             }else{
+                   hora=h>9?""+h:"0"+h;
+             }      
+        } else {
+            hora = calendario.get(Calendar.HOUR_OF_DAY) > 9 ? "" + calendario.get(Calendar.HOUR_OF_DAY) : "0" + calendario.get(Calendar.HOUR_OF_DAY);
+        }
+        min = calendario.get(Calendar.MINUTE) > 9 ? "" + calendario.get(Calendar.MINUTE) : "0" + calendario.get(Calendar.MINUTE);
+        seg = calendario.get(Calendar.SECOND) > 9 ? "" + calendario.get(Calendar.SECOND) : "0" + calendario.get(Calendar.SECOND);
+
+    }
 }

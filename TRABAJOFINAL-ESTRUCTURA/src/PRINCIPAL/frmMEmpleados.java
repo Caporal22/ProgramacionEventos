@@ -27,8 +27,8 @@ public class frmMEmpleados extends javax.swing.JInternalFrame {
     }
 
     private void cargarDatos(){
-        DefaultTableModel modelo = new DefaultTableModel();
         
+        modelo.setRowCount(0);
         modelo.addColumn("Nombre");
         modelo.addColumn("Tipo de empleado");
         modelo.addColumn("Turno");
@@ -37,58 +37,55 @@ public class frmMEmpleados extends javax.swing.JInternalFrame {
         modelo.addColumn("Comentario");
         
         Nodo actual = listaUsuarios.getCabeza();
-        while(actual != null){
-            Usuario usuario = actual.getValor();
-            Horario horario = usuario.getHorario();
-            String turno = horario.getTurno(); // Obtener el turno del usuario
-            String diaDescanso = horario.getDiaDescanso(); // Obtener el día de descanso del usuario
-            String nombre = usuario.getNombre();
-            
-     
-            
-             modelo.addRow(new Object[]{
-            usuario.getNombre(),
-            usuario.getTipo(),
-            horario != null ? horario.getTurno() : "No definido", // Manejo de null
-            horario != null ? horario.getDiaDescanso() : "No definido", // Manejo de null
-            usuario.getContraseña(),
-            "Comnetario"
-                    
-        });
-        actual = actual.getSiguiente();
-        }
-        TablaEmpleados.setModel(modelo);
-    }
-    private void filtrarPorTipo() {
-        String tipoSeleccionado = (String) jcbTipo.getSelectedItem();
-        modelo.setRowCount(0); // Limpiar la tabla
-          Nodo actual = listaUsuarios.getCabeza(); // Asumiendo que tienes un método getCabeza()
 
         while (actual != null) {
-
             Usuario usuario = actual.getValor();
+            Horario horario = usuario.getHorario();
+            String turno = horario != null ? horario.getTurno() : "No definido"; // Manejo de null
+            String diaDescanso = horario != null ? horario.getDiaDescanso() : "No definido"; // Manejo de null
+            modelo.addRow(new Object[]{
+                usuario.getNombre(),
+                usuario.getTipo(),
+                turno,
+                diaDescanso,
+                usuario.getContraseña(),
+                "Comentario" 
 
-            // Aquí debes agregar la lógica para obtener el turno y el día de descanso
-
-            String turno = "Ejemplo Turno"; 
-            String diaDescanso = "Ejemplo Día"; // Reemplaza con la lógica real
-            String comentario = "Comentario"; // Reemplaza con la lógica real
-
-            if (tipoSeleccionado.equals("Todos") || usuario.getTipo().equals(tipoSeleccionado)) {
-                modelo.addRow(new Object[]{
-                    usuario.getNombre(),
-                    usuario.getTipo(),
-                    turno,
-                    diaDescanso,
-                    usuario.getContraseña(),
-                    comentario
-                });
-            }
+            });
 
             actual = actual.getSiguiente();
 
         }
+
+    }
+    
+    private void filtrarPorTipo() {
+
+       String tipoSeleccionado = (String) jcbTipo.getSelectedItem();
+    modelo.setRowCount(0); 
+
+    Nodo actual = listaUsuarios.getCabeza();
+
+    while (actual != null) {
+        Usuario usuario = actual.getValor();
+        Horario horario = usuario.getHorario();
+        String turno = horario != null ? horario.getTurno() : "No definido"; 
+        String diaDescanso = horario != null ? horario.getDiaDescanso() : "No definido"; 
+        // Filtra según el tipod de empleados seleccionado
+        if (tipoSeleccionado.equals("Todos") || usuario.getTipo().equals(tipoSeleccionado)) {
+            modelo.addRow(new Object[]{
+                usuario.getNombre(),
+                usuario.getTipo(),
+                turno,
+                diaDescanso,
+                usuario.getContraseña(),
+                "Comentario" 
+            });
         }
+        actual = actual.getSiguiente();
+    }
+    }
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -105,6 +102,11 @@ public class frmMEmpleados extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         TablaEmpleados = new javax.swing.JTable();
         jcbTipo = new javax.swing.JComboBox<>();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
 
         jbnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jbnActualizar.setText("Actualizar");
@@ -191,20 +193,16 @@ public class frmMEmpleados extends javax.swing.JInternalFrame {
        int filaSeleccionada = TablaEmpleados.getSelectedRow();
 
         if (filaSeleccionada != -1) {
-
             String nombre = (String) modelo.getValueAt(filaSeleccionada, 0);
             String tipo = (String) modelo.getValueAt(filaSeleccionada, 1);
             String turno = (String) modelo.getValueAt(filaSeleccionada, 2);
             String diaDescanso = (String) modelo.getValueAt(filaSeleccionada, 3);
             String contraseña = (String) modelo.getValueAt(filaSeleccionada, 4);
             String comentario = (String) modelo.getValueAt(filaSeleccionada, 5);
-
             JOptionPane.showMessageDialog(this, "Actualizar datos de: " + nombre);
+        } else {
 
-   } else {
-
-            JOptionPane.showMessageDialog(this, "Seleccione una fila para actualizar.");
-
+            JOptionPane.showMessageDialog(this, "Seleccione un empleado para actualizar.");
         }
     }//GEN-LAST:event_jbnActualizarActionPerformed
 
@@ -214,17 +212,13 @@ public class frmMEmpleados extends javax.swing.JInternalFrame {
         if (filaSeleccionada != -1) {
             String nombre = (String) modelo.getValueAt(filaSeleccionada, 0);
             int confirm = JOptionPane.showConfirmDialog(this, "¿Está seguro de que desea eliminar a " + nombre + "?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-
             if (confirm == JOptionPane.YES_OPTION) {
-             listaUsuarios.eliminar(nombre);
-                modelo.removeRow(filaSeleccionada); 
-                JOptionPane.showMessageDialog(this, "Empleado eliminado.");
+                listaUsuarios.eliminar(nombre); 
+                modelo.removeRow(filaSeleccionada);
+                JOptionPane.showMessageDialog(this, "Empleado eliminado correctamente.");
             }
-
         } else {
-
-            JOptionPane.showMessageDialog(this, "Seleccione una fila para eliminar.");
-
+            JOptionPane.showMessageDialog(this, "Seleccione un empleado para eliminar.");
         }
     }//GEN-LAST:event_jbnEliminarActionPerformed
 

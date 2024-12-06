@@ -207,12 +207,13 @@ FondoPanel fondo = new FondoPanel();
 
 
         if (tipo.isEmpty() || nombre.isEmpty() || usuario.isEmpty() || contraseña.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Todos los campos son obligatorios", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Por favor asegúrate de no dejar ningún espacio en blanco", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
+            Horario nuevoHorario = new Horario(horario, diaDescanso);
             // Crea el nuevo usuario
-            Usuario nuevoUsuario = new Usuario(nombre, contraseña, usuario, tipo, true);
-            listaUsuarios.agregar(nuevoUsuario); // Agregar el nuevo usuario a la lista
-            JOptionPane.showMessageDialog(null, "Empleado registrado correctamente");
+            Usuario nuevoUsuario = new Usuario(nombre, contraseña, usuario, tipo, true, nuevoHorario);
+            listaUsuarios.agregar(nuevoUsuario); // Agrega el nuevo usuario a la lista
+            JOptionPane.showMessageDialog(null, "Empleado agregado correctamente");
             jlbNombre.setText("");
             jlbUsuario.setText("");
             jlbContraseña.setText("");
