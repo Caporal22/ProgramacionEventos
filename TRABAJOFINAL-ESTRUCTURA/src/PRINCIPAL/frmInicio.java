@@ -5,65 +5,30 @@
 package PRINCIPAL;
 
 import javax.swing.JOptionPane;
+import Clases.*;
+import java.util.HashMap;
 
 /**
  *
  * @author karol
  */
 public class frmInicio extends javax.swing.JFrame {
+    public static HashMap<String, Usuario> usuarios = new HashMap<>(); 
 
+    private static final String ADMIN_USERNAME = "admin"; // Usuario predeterminado
+
+    private static final String ADMIN_PASSWORD = "admin123";
+    private ListaEnlazada listaUsuarios; 
     /**
      * Creates new form frmInicio
      */
-    public frmInicio() {
+    public frmInicio(ListaEnlazada listaUsuarios) {
         initComponents();
         this.setLocationRelativeTo(null);
-    }
-    
-    
-    void ocultar() {
-        if(jcmTipo.getSelectedItem().equals("Administrador"))
-             {
-                 frmMenuPrincipal m = new frmMenuPrincipal();
-                 m.show();
-                
-                 this.setVisible(false);
-             }else {
-            if(jcmTipo.getSelectedItem().equals("Mesero"))
-                 {
-                     frmMenuPrincipal m= new frmMenuPrincipal();
-                     m.Inventario.setVisible(false);
-                     m.VentasT.setVisible(false);
-                     m.Empleados.setVisible(false);
-
-                     m.show();
-                     this.setVisible(false);
-                 }else{
-            if(jcmTipo.getSelectedItem().equals("Cocinero")){
-                frmMenuPrincipal m = new frmMenuPrincipal();
-                m.VentasT.setVisible(false);
-                m.Empleados.setVisible(false);
-                m.Ordenes.setVisible(false);
-                m.show();
-                this.setVisible(false);
-                }
-            }
-            if(jcmTipo.getSelectedItem().equals("Bartender")){
-                frmMenuPrincipal m = new frmMenuPrincipal();
-                m.VentasT.setVisible(false);
-                m.Empleados.setVisible(false);
-                m.Ordenes.setVisible(false);
-                m.show();
-                this.setVisible(false);
-            }
-                    
-                    
-                   
-            
-        }
+        this.listaUsuarios = listaUsuarios;
         
     }
-
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -188,17 +153,53 @@ public class frmInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jlbUsuarioActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String usuario = jlbUsuario.getText();
-        String contraseña = new String(jlbContraseña.getPassword());
+    String usuario = jlbUsuario.getText();
+    String contraseña = new String(jlbContraseña.getPassword());
+    String tipoEsperado = (String)jcmTipo.getSelectedItem();
+    
+    // Verifica si el usuario es el administrador
+    if (usuario.equals(ADMIN_USERNAME) && contraseña.equals(ADMIN_PASSWORD)) {
+        frmMenuPrincipal mi = new frmMenuPrincipal(listaUsuarios);
+        mi.setVisible(true);
+        JOptionPane.showMessageDialog(null, "¡Bienvenido al sistema " + usuario + "!");
+        this.setVisible(false);
+    } else {
+        // Buscar el usuario en la lista enlazada
+        Usuario usuarioRegistrado = listaUsuarios.buscar(usuario);
 
-        if (usuario.equals("admin") && contraseña.equals("admin")) {
-            frmMenuPrincipal m = new frmMenuPrincipal();
-            JOptionPane.showMessageDialog(null, "BIENVENIDO AL SISTEMA " + usuario);
-            ocultar();
-
-        } else {
-            JOptionPane.showMessageDialog(null, "ERROR VERIFIQUE LOS DATOS!!");
+        if (usuarioRegistrado != null && usuarioRegistrado.getContraseña().equals(contraseña)) {
+            // Si el usuario existe, verifica su rol
+            
+            if (usuarioRegistrado.getTipo().equals(tipoEsperado)) {   
+            
+            frmMenuPrincipal mi = new frmMenuPrincipal(listaUsuarios);
+            
+            // Control de roles
+            if (usuarioRegistrado.getTipo().equals("Mesero")) {
+                mi.Inventario.setVisible(false);
+                mi.VentasT.setVisible(false);
+                mi.Empleados.setVisible(false);
+            } else if (usuarioRegistrado.getTipo().equals("Cocinero")) {
+                mi.VentasT.setVisible(false);
+                mi.Empleados.setVisible(false);
+                mi.Ordenes.setVisible(false);
+            } else if (usuarioRegistrado.getTipo().equals("Bartender")) {
+                mi.VentasT.setVisible(false);
+                mi.Empleados.setVisible(false);
+                mi.Ordenes.setVisible(false);
+            }
+            
+            mi.setVisible(true);
+            JOptionPane.showMessageDialog(null, "¡Bienvenido al sistema " + usuario + "!");
+            this.setVisible(false);
+            } else {
+            JOptionPane.showMessageDialog(null, "ERROR: Tipo de usuario no permitido para este acceso.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+            
+        } else {
+            JOptionPane.showMessageDialog(null, "ERROR: Verifique los datos!!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -214,6 +215,7 @@ public class frmInicio extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+    ListaEnlazada listaUsuarios = new ListaEnlazada();    
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -240,7 +242,9 @@ public class frmInicio extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new frmInicio().setVisible(true);
+                
+            frmInicio ini = new frmInicio(listaUsuarios);
+            ini.setVisible(true); 
             }
         });
     }

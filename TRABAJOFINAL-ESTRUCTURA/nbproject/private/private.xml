@@ -2,6 +2,17 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group/>
+=======
+        <group>
+            <file>file:/C:/Users/karol/OneDrive/Documentos/TRABAJOFINAL-ESTRUCTURA/src/PRINCIPAL/frmRegistroEmpleados.java</file>
+            <file>file:/C:/Users/karol/OneDrive/Documentos/TRABAJOFINAL-ESTRUCTURA/src/Clases/Usuario.java</file>
+            <file>file:/C:/Users/karol/OneDrive/Documentos/TRABAJOFINAL-ESTRUCTURA/src/Clases/ListaEnlazada.java</file>
+            <file>file:/C:/Users/karol/OneDrive/Documentos/TRABAJOFINAL-ESTRUCTURA/src/PRINCIPAL/frmMenuPrincipal.java</file>
+            <file>file:/C:/Users/karol/OneDrive/Documentos/TRABAJOFINAL-ESTRUCTURA/src/PRINCIPAL/frmMEmpleados.java</file>
+            <file>file:/C:/Users/karol/OneDrive/Documentos/TRABAJOFINAL-ESTRUCTURA/src/Clases/Horario.java</file>
+        </group>
+>>>>>>> master
     </open-files>
 </project-private>
