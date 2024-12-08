@@ -51,7 +51,10 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
         Inventario = new javax.swing.JMenu();
         Platillos = new javax.swing.JMenu();
         Ordenes = new javax.swing.JMenu();
+        jmenuCancelaciones = new javax.swing.JMenuItem();
         VentasT = new javax.swing.JMenu();
+        jmenuVentasTotales = new javax.swing.JMenuItem();
+        jmenuReportes = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -119,9 +122,35 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
         jMenuBar2.add(Platillos);
 
         Ordenes.setText("Ordenes");
+
+        jmenuCancelaciones.setText("Cancelaciones");
+        jmenuCancelaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmenuCancelacionesActionPerformed(evt);
+            }
+        });
+        Ordenes.add(jmenuCancelaciones);
+
         jMenuBar2.add(Ordenes);
 
         VentasT.setText("Ventas T");
+
+        jmenuVentasTotales.setText("Ventas Totales");
+        jmenuVentasTotales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmenuVentasTotalesActionPerformed(evt);
+            }
+        });
+        VentasT.add(jmenuVentasTotales);
+
+        jmenuReportes.setText("Reportes de venta");
+        jmenuReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmenuReportesActionPerformed(evt);
+            }
+        });
+        VentasT.add(jmenuReportes);
+
         jMenuBar2.add(VentasT);
 
         setJMenuBar(jMenuBar2);
@@ -165,6 +194,24 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
        
         
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jmenuCancelacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmenuCancelacionesActionPerformed
+        frmMCancelaciones cm = new frmMCancelaciones();
+       jmcMenu.add(cm);
+       cm.setVisible(true);
+    }//GEN-LAST:event_jmenuCancelacionesActionPerformed
+
+    private void jmenuVentasTotalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmenuVentasTotalesActionPerformed
+         frmMVentasTotales vt = new frmMVentasTotales();
+       jmcMenu.add(vt);
+       vt.setVisible(true);
+    }//GEN-LAST:event_jmenuVentasTotalesActionPerformed
+
+    private void jmenuReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmenuReportesActionPerformed
+        frmMReportesVentas rt = new frmMReportesVentas();
+       jmcMenu.add(rt);
+       rt.setVisible(true);
+    }//GEN-LAST:event_jmenuReportesActionPerformed
     
     /**
      * @param args the command line arguments
@@ -181,6 +228,9 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     public static javax.swing.JDesktopPane jmcMenu;
+    private javax.swing.JMenuItem jmenuCancelaciones;
+    private javax.swing.JMenuItem jmenuReportes;
+    private javax.swing.JMenuItem jmenuVentasTotales;
     private javax.swing.JLabel lblReloj;
     // End of variables declaration//GEN-END:variables
 

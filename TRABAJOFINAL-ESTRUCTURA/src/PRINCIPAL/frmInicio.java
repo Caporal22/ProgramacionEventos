@@ -17,7 +17,7 @@ public class frmInicio extends javax.swing.JFrame {
 
     private static final String ADMIN_USERNAME = "admin"; // Usuario predeterminado
 
-    private static final String ADMIN_PASSWORD = "admin123";
+    private static final String ADMIN_PASSWORD = "1111";
     private ListaEnlazada listaUsuarios; 
     /**
      * Creates new form frmInicio
