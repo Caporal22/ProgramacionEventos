@@ -17,8 +17,8 @@ import javax.swing.JPanel;
  * @author karol
  */
 public class frmRegistroEmpleados extends javax.swing.JInternalFrame {
-private ListaEnlazada listaUsuarios;
-FondoPanel fondo = new FondoPanel();
+    private ListaEnlazada listaUsuarios;
+    FondoPanel fondo = new FondoPanel();
     /**
      * Creates new form frmRegistroEmpleados
      */

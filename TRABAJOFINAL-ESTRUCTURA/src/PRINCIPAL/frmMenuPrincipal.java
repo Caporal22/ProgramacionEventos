@@ -4,6 +4,7 @@
  */
 package PRINCIPAL;
 
+import Clases.Cola;
 import Clases.ListaEnlazada;
 import Clases.Usuario;
 import java.util.*;
@@ -18,12 +19,14 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
     Thread h1;
 
     private ListaEnlazada listaUsuarios;
+    private Cola colaIngredientes;
     /**
      * Creates new form frmMenuPrincipal
      */
     public frmMenuPrincipal(ListaEnlazada listaUsuarios ) {
         initComponents();
         this.listaUsuarios = listaUsuarios;
+        this.colaIngredientes = new Cola();
         h1 = new Thread(this);
         h1.start();
 
@@ -49,6 +52,8 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         Inventario = new javax.swing.JMenu();
+        jmiInventarioRegistrar = new javax.swing.JMenuItem();
+        jmiInventarioMostrar = new javax.swing.JMenuItem();
         Platillos = new javax.swing.JMenu();
         Ordenes = new javax.swing.JMenu();
         VentasT = new javax.swing.JMenu();
@@ -113,6 +118,23 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
         jMenuBar2.add(Empleados);
 
         Inventario.setText("Inventario");
+
+        jmiInventarioRegistrar.setText("Registrar");
+        jmiInventarioRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiInventarioRegistrarActionPerformed(evt);
+            }
+        });
+        Inventario.add(jmiInventarioRegistrar);
+
+        jmiInventarioMostrar.setText("Mostrar");
+        jmiInventarioMostrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmiInventarioMostrarActionPerformed(evt);
+            }
+        });
+        Inventario.add(jmiInventarioMostrar);
+
         jMenuBar2.add(Inventario);
 
         Platillos.setText("Platillos");
@@ -165,6 +187,19 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
        
         
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jmiInventarioMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiInventarioMostrarActionPerformed
+         frmInventarioMostrar em = new frmInventarioMostrar(colaIngredientes);
+         jmcMenu.add(em);
+         em.setVisible(true);
+    }//GEN-LAST:event_jmiInventarioMostrarActionPerformed
+
+    private void jmiInventarioRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiInventarioRegistrarActionPerformed
+       
+         frmInventarioRegistro em = new frmInventarioRegistro(colaIngredientes);
+         jmcMenu.add(em);
+         em.setVisible(true);
+    }//GEN-LAST:event_jmiInventarioRegistrarActionPerformed
     
     /**
      * @param args the command line arguments
@@ -181,6 +216,8 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     public static javax.swing.JDesktopPane jmcMenu;
+    private javax.swing.JMenuItem jmiInventarioMostrar;
+    private javax.swing.JMenuItem jmiInventarioRegistrar;
     private javax.swing.JLabel lblReloj;
     // End of variables declaration//GEN-END:variables
 
