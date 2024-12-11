@@ -4,12 +4,14 @@
  */
 package Clases;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Danyphantom
  */
 
-public class NodoIngrediente {
+public class NodoIngrediente implements Serializable{
     private Ingrediente valor; 
     private NodoIngrediente siguiente; 
     public NodoIngrediente(Ingrediente valor) {

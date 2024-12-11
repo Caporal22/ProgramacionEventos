@@ -5,7 +5,9 @@
 
 package Clases;
 
-public class Cola {
+import java.io.Serializable;
+
+public class Cola implements Serializable {
     public NodoIngrediente frente;
     private NodoIngrediente fin;
     private int tamaño;

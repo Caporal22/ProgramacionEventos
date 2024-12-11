@@ -1,6 +1,8 @@
 package Clases;
 
-public class Ingrediente {
+import java.io.Serializable;
+
+public class Ingrediente implements Serializable {
     private String nombre;
     private int cantidad;
     private double precio;

@@ -128,6 +128,11 @@ public class frmPlatilloMostrar extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         jtfNombre = new javax.swing.JTextField();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         jTablePlatillo.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},

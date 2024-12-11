@@ -4,11 +4,13 @@
  */
 package Clases;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Danyphantom
  */
-public class Platillo {
+public class Platillo implements Serializable {
     private String nombre;
     private String categoria;
     private double precio;

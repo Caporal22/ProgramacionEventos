@@ -4,12 +4,14 @@
  */
 package Clases;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Danyphantom
  */
 
-public class NodoPlatillo {
+public class NodoPlatillo implements Serializable {
     private Platillo platillo;
     private NodoPlatillo siguiente;
 

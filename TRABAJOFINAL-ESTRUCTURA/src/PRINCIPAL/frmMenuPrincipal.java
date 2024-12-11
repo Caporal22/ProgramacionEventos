@@ -8,6 +8,12 @@ import Clases.Cola;
 import Clases.ColaPlatillo;
 import Clases.ListaEnlazada;
 import Clases.Usuario;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.*;
 
 /**
@@ -27,17 +33,80 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
      */
     public frmMenuPrincipal(ListaEnlazada listaUsuarios ) {
         initComponents();
+
         this.listaUsuarios = listaUsuarios;
         this.colaIngredientes = new Cola();
-        colaPlatillos = new ColaPlatillo();
+        this.colaPlatillos = new ColaPlatillo();
+
         h1 = new Thread(this);
         h1.start();
 
-
-
+        cargarDatos();
         
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            eliminarDatos();
+        }));
     }
 
+
+    @Override
+    public void run() {
+        
+        Thread ct = Thread.currentThread();
+
+        while (ct == h1) {
+            calcula();
+            lblReloj.setText(hora + ":" + min + ":" + seg + " " + ampm);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException error) {
+            }
+        }
+
+
+    }
+
+    private void guardarDatos() {
+        try {
+            // Serializar las colas de ingredientes y platillos
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("almacen.dat"));
+            out.writeObject(colaIngredientes);
+            out.writeObject(colaPlatillos);
+            out.close();
+            System.out.println("Datos guardados con éxito.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error al guardar los datos.");
+        }
+    }
+    
+    private void cargarDatos() {
+        try {
+            // Deserializar las colas de ingredientes y platillos
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("almacen.dat"));
+            colaIngredientes = (Cola) in.readObject();
+            colaPlatillos = (ColaPlatillo) in.readObject();
+            in.close();
+            System.out.println("Datos cargados con éxito.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Error al cargar los datos.");
+        }
+    }
+    
+    private void eliminarDatos() {
+        File archivo = new File("almacen.dat");
+        if (archivo.exists()) {
+            if (archivo.delete()) {
+                System.out.println("Archivo almacen.dat eliminado con éxito.");
+            } else {
+                System.out.println("No se pudo eliminar el archivo almacen.dat.");
+            }
+        }
+    }
+
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -193,9 +262,12 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       this.setVisible(false);
-      frmInicio ini = new frmInicio(listaUsuarios);
-      ini.setVisible(true);
+       guardarDatos();  // Guardar los datos antes de cerrar sesión
+
+        // Cerrar el formulario actual y abrir el de inicio
+        this.setVisible(false);
+        frmInicio ini = new frmInicio(listaUsuarios);
+        ini.setVisible(true);
       
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -260,41 +332,27 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel lblReloj;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void run() {
-        
-        Thread ct = Thread.currentThread();
-
-        while (ct == h1) {
-            calcula();
-            lblReloj.setText(hora + ":" + min + ":" + seg + " " + ampm);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException error) {
-            }
-        }
-
-
-    }
+    
 
     private void calcula() {
-         Calendar calendario = new GregorianCalendar();
-        Date fechaHoraactual = new Date();
-        calendario.setTime(fechaHoraactual);
+        Calendar calendario = new GregorianCalendar();
+        Date fechaHoraActual = new Date();
+        calendario.setTime(fechaHoraActual);
         ampm = calendario.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM";
+
+        // Calcular la hora en formato de 12 horas
         if (ampm.equals("PM")) {
             int h = calendario.get(Calendar.HOUR_OF_DAY) - 12;
-            hora = h > 9 ? "" + h : "0" + h;
-            if(h==00){
-                   hora="12";
-             }else{
-                   hora=h>9?""+h:"0"+h;
-             }      
+            if (h == 0) {
+                hora = "12"; // Caso especial para la medianoche
+            } else {
+                hora = h > 9 ? "" + h : "0" + h; // Formato de hora (sin el 0 inicial)
+            }
         } else {
             hora = calendario.get(Calendar.HOUR_OF_DAY) > 9 ? "" + calendario.get(Calendar.HOUR_OF_DAY) : "0" + calendario.get(Calendar.HOUR_OF_DAY);
         }
+
         min = calendario.get(Calendar.MINUTE) > 9 ? "" + calendario.get(Calendar.MINUTE) : "0" + calendario.get(Calendar.MINUTE);
         seg = calendario.get(Calendar.SECOND) > 9 ? "" + calendario.get(Calendar.SECOND) : "0" + calendario.get(Calendar.SECOND);
-
     }
 }

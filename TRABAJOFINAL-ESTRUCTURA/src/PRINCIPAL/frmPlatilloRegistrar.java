@@ -49,6 +49,11 @@ public class frmPlatilloRegistrar extends javax.swing.JInternalFrame {
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
 
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+
         jLabel1.setText("VENTANA DE REGISTRO DE PLATILLOS");
 
         jLabel2.setText("Nombre : ");
