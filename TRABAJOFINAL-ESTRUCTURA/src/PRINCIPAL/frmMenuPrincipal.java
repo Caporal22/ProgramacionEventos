@@ -5,6 +5,7 @@
 package PRINCIPAL;
 
 import Clases.Cola;
+import Clases.ColaPlatillo;
 import Clases.ListaEnlazada;
 import Clases.Usuario;
 import java.util.*;
@@ -20,6 +21,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
 
     private ListaEnlazada listaUsuarios;
     private Cola colaIngredientes;
+    private ColaPlatillo colaPlatillos;
     /**
      * Creates new form frmMenuPrincipal
      */
@@ -27,6 +29,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
         initComponents();
         this.listaUsuarios = listaUsuarios;
         this.colaIngredientes = new Cola();
+        colaPlatillos = new ColaPlatillo();
         h1 = new Thread(this);
         h1.start();
 
@@ -50,11 +53,16 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
         jMenuBar2 = new javax.swing.JMenuBar();
         Empleados = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem2 = new javax.swing.JMenuItem();
         Inventario = new javax.swing.JMenu();
         jmiInventarioRegistrar = new javax.swing.JMenuItem();
+        jSeparator2 = new javax.swing.JPopupMenu.Separator();
         jmiInventarioMostrar = new javax.swing.JMenuItem();
         Platillos = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        jMenuItem4 = new javax.swing.JMenuItem();
         Ordenes = new javax.swing.JMenu();
         VentasT = new javax.swing.JMenu();
 
@@ -87,7 +95,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
         jmcMenuLayout.setVerticalGroup(
             jmcMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jmcMenuLayout.createSequentialGroup()
-                .addContainerGap(580, Short.MAX_VALUE)
+                .addContainerGap(663, Short.MAX_VALUE)
                 .addGroup(jmcMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jmcMenuLayout.createSequentialGroup()
                         .addComponent(jButton1)
@@ -106,6 +114,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
         Empleados.add(jMenuItem1);
+        Empleados.add(jSeparator1);
 
         jMenuItem2.setText("Mostrar");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -126,6 +135,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
         Inventario.add(jmiInventarioRegistrar);
+        Inventario.add(jSeparator2);
 
         jmiInventarioMostrar.setText("Mostrar");
         jmiInventarioMostrar.addActionListener(new java.awt.event.ActionListener() {
@@ -138,6 +148,24 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
         jMenuBar2.add(Inventario);
 
         Platillos.setText("Platillos");
+
+        jMenuItem3.setText("Registrar");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        Platillos.add(jMenuItem3);
+        Platillos.add(jSeparator3);
+
+        jMenuItem4.setText("Mostrar");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
+        Platillos.add(jMenuItem4);
+
         jMenuBar2.add(Platillos);
 
         Ordenes.setText("Ordenes");
@@ -174,18 +202,13 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
     frmRegistroEmpleados em = new frmRegistroEmpleados(listaUsuarios);
     jmcMenu.add(em);
-    em.setVisible(true);
-    
-        
-        
+    em.setVisible(true);    
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
        frmMEmpleados em = new frmMEmpleados(listaUsuarios);
        jmcMenu.add(em);
        em.setVisible(true);
-       
-        
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jmiInventarioMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiInventarioMostrarActionPerformed
@@ -195,11 +218,22 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_jmiInventarioMostrarActionPerformed
 
     private void jmiInventarioRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiInventarioRegistrarActionPerformed
-       
          frmInventarioRegistro em = new frmInventarioRegistro(colaIngredientes);
          jmcMenu.add(em);
          em.setVisible(true);
     }//GEN-LAST:event_jmiInventarioRegistrarActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        frmPlatilloRegistrar em = new frmPlatilloRegistrar(colaPlatillos);
+        jmcMenu.add(em);
+        em.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        frmPlatilloMostrar em = new frmPlatilloMostrar(colaPlatillos);
+        jmcMenu.add(em);
+        em.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
     
     /**
      * @param args the command line arguments
@@ -215,6 +249,11 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
     public static javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
+    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     public static javax.swing.JDesktopPane jmcMenu;
     private javax.swing.JMenuItem jmiInventarioMostrar;
     private javax.swing.JMenuItem jmiInventarioRegistrar;
