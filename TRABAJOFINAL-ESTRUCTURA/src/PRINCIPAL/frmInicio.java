@@ -6,6 +6,7 @@ package PRINCIPAL;
 
 import javax.swing.JOptionPane;
 import Clases.*;
+import Clases1.Cola;
 import java.util.HashMap;
 
 /**
@@ -19,13 +20,20 @@ public class frmInicio extends javax.swing.JFrame {
 
     private static final String ADMIN_PASSWORD = "admin123";
     private ListaEnlazada listaUsuarios; 
+    public static String nombreMesero;
+    public static String horarioMesero;
+    public Cola<Double> colaTotales;
+    
+    
     /**
      * Creates new form frmInicio
      */
-    public frmInicio(ListaEnlazada listaUsuarios) {
+    public frmInicio(ListaEnlazada listaUsuarios,Cola<Double> colaTotales) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.listaUsuarios = listaUsuarios;
+        
+        
         
     }
  
@@ -157,27 +165,29 @@ public class frmInicio extends javax.swing.JFrame {
     String contraseña = new String(jlbContraseña.getPassword());
     String tipoEsperado = (String)jcmTipo.getSelectedItem();
     
-    // Verifica si el usuario es el administrador
+    
     if (usuario.equals(ADMIN_USERNAME) && contraseña.equals(ADMIN_PASSWORD)) {
-        frmMenuPrincipal mi = new frmMenuPrincipal(listaUsuarios);
+        frmMenuPrincipal mi = new frmMenuPrincipal(listaUsuarios, colaTotales);
         mi.setVisible(true);
         JOptionPane.showMessageDialog(null, "¡Bienvenido al sistema " + usuario + "!");
         this.setVisible(false);
     } else {
-        // Buscar el usuario en la lista enlazada
+      
         Usuario usuarioRegistrado = listaUsuarios.buscar(usuario);
 
         if (usuarioRegistrado != null && usuarioRegistrado.getContraseña().equals(contraseña)) {
-            // Si el usuario existe, verifica su rol
+           
             
             if (usuarioRegistrado.getTipo().equals(tipoEsperado)) {   
             
-            frmMenuPrincipal mi = new frmMenuPrincipal(listaUsuarios);
+            frmMenuPrincipal mi = new frmMenuPrincipal(listaUsuarios, colaTotales);
             
             // Control de roles
             if (usuarioRegistrado.getTipo().equals("Mesero")) {
+                nombreMesero = usuarioRegistrado.getNombre();
+                horarioMesero = usuarioRegistrado.getHorario().getTurno();
                 mi.Inventario.setVisible(false);
-                mi.VentasT.setVisible(false);
+                
                 mi.Empleados.setVisible(false);
             } else if (usuarioRegistrado.getTipo().equals("Cocinero")) {
                 mi.VentasT.setVisible(false);
@@ -204,7 +214,7 @@ public class frmInicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jcmTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmTipoActionPerformed
@@ -215,7 +225,11 @@ public class frmInicio extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-    ListaEnlazada listaUsuarios = new ListaEnlazada();    
+    ListaEnlazada listaUsuarios = new ListaEnlazada();
+    Cola<Double> colaTotales = new Cola();
+    
+    
+    
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -243,7 +257,7 @@ public class frmInicio extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 
-            frmInicio ini = new frmInicio(listaUsuarios);
+            frmInicio ini = new frmInicio(listaUsuarios, colaTotales);
             ini.setVisible(true); 
             }
         });

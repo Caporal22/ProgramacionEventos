@@ -223,7 +223,7 @@ public class frmMEmpleados extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jbnEliminarActionPerformed
 
     private void jcbTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbTipoActionPerformed
-        filtrarPorTipo();
+      filtrarPorTipo();
     }//GEN-LAST:event_jcbTipoActionPerformed
 
 

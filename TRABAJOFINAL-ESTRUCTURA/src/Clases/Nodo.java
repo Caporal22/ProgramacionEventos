@@ -4,13 +4,11 @@
  */
 package Clases;
 
-import java.io.Serializable;
-
 /**
  *
  * @author karol
  */
-public class Nodo implements Serializable {
+public class Nodo {
     private Usuario valor; // Almacena el usuario
     private Nodo siguiente; // Referencia al siguiente nodo
 

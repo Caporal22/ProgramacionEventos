@@ -4,17 +4,10 @@
  */
 package PRINCIPAL;
 
-import Clases.Cola;
-import Clases.ColaPlatillo;
 import Clases.ListaEnlazada;
 import Clases.Usuario;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.*;
+import Clases1.*;
 
 /**
  *
@@ -24,89 +17,26 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
     String hora, min, seg, ampm;
     Calendar calendario;
     Thread h1;
+    
+    public  Cola<Double> colaTotales;
 
     private ListaEnlazada listaUsuarios;
-    private Cola colaIngredientes;
-    private ColaPlatillo colaPlatillos;
     /**
      * Creates new form frmMenuPrincipal
      */
-    public frmMenuPrincipal(ListaEnlazada listaUsuarios ) {
+    public frmMenuPrincipal(ListaEnlazada listaUsuarios, Cola<Double> colaTotales) {
         initComponents();
-
         this.listaUsuarios = listaUsuarios;
-        this.colaIngredientes = new Cola();
-        this.colaPlatillos = new ColaPlatillo();
-
+        this.colaTotales = colaTotales;
+        
         h1 = new Thread(this);
         h1.start();
 
-        cargarDatos();
+
+
         
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            eliminarDatos();
-        }));
     }
 
-
-    @Override
-    public void run() {
-        
-        Thread ct = Thread.currentThread();
-
-        while (ct == h1) {
-            calcula();
-            lblReloj.setText(hora + ":" + min + ":" + seg + " " + ampm);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException error) {
-            }
-        }
-
-
-    }
-
-    private void guardarDatos() {
-        try {
-            // Serializar las colas de ingredientes y platillos
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("almacen.dat"));
-            out.writeObject(colaIngredientes);
-            out.writeObject(colaPlatillos);
-            out.close();
-            System.out.println("Datos guardados con éxito.");
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error al guardar los datos.");
-        }
-    }
-    
-    private void cargarDatos() {
-        try {
-            // Deserializar las colas de ingredientes y platillos
-            ObjectInputStream in = new ObjectInputStream(new FileInputStream("almacen.dat"));
-            colaIngredientes = (Cola) in.readObject();
-            colaPlatillos = (ColaPlatillo) in.readObject();
-            in.close();
-            System.out.println("Datos cargados con éxito.");
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("Error al cargar los datos.");
-        }
-    }
-    
-    private void eliminarDatos() {
-        File archivo = new File("almacen.dat");
-        if (archivo.exists()) {
-            if (archivo.delete()) {
-                System.out.println("Archivo almacen.dat eliminado con éxito.");
-            } else {
-                System.out.println("No se pudo eliminar el archivo almacen.dat.");
-            }
-        }
-    }
-
-
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -122,18 +52,15 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
         jMenuBar2 = new javax.swing.JMenuBar();
         Empleados = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
-        jSeparator1 = new javax.swing.JPopupMenu.Separator();
         jMenuItem2 = new javax.swing.JMenuItem();
         Inventario = new javax.swing.JMenu();
-        jmiInventarioRegistrar = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        jmiInventarioMostrar = new javax.swing.JMenuItem();
-        Platillos = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem4 = new javax.swing.JMenuItem();
         Ordenes = new javax.swing.JMenu();
+        jcmRegistro = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jmenuCancelaciones = new javax.swing.JMenuItem();
         VentasT = new javax.swing.JMenu();
+        jmenuVentasTotales = new javax.swing.JMenuItem();
+        jmenuReportes = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -157,14 +84,14 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jmcMenuLayout.createSequentialGroup()
                 .addGap(59, 59, 59)
                 .addComponent(lblReloj, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 654, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 775, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(20, 20, 20))
         );
         jmcMenuLayout.setVerticalGroup(
             jmcMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jmcMenuLayout.createSequentialGroup()
-                .addContainerGap(663, Short.MAX_VALUE)
+                .addContainerGap(568, Short.MAX_VALUE)
                 .addGroup(jmcMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jmcMenuLayout.createSequentialGroup()
                         .addComponent(jButton1)
@@ -183,7 +110,6 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
             }
         });
         Empleados.add(jMenuItem1);
-        Empleados.add(jSeparator1);
 
         jMenuItem2.setText("Mostrar");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -196,51 +122,54 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
         jMenuBar2.add(Empleados);
 
         Inventario.setText("Inventario");
-
-        jmiInventarioRegistrar.setText("Registrar");
-        jmiInventarioRegistrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmiInventarioRegistrarActionPerformed(evt);
-            }
-        });
-        Inventario.add(jmiInventarioRegistrar);
-        Inventario.add(jSeparator2);
-
-        jmiInventarioMostrar.setText("Mostrar");
-        jmiInventarioMostrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jmiInventarioMostrarActionPerformed(evt);
-            }
-        });
-        Inventario.add(jmiInventarioMostrar);
-
         jMenuBar2.add(Inventario);
 
-        Platillos.setText("Platillos");
+        Ordenes.setText("Ordenes");
 
-        jMenuItem3.setText("Registrar");
+        jcmRegistro.setText("Registro");
+        jcmRegistro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcmRegistroActionPerformed(evt);
+            }
+        });
+        Ordenes.add(jcmRegistro);
+
+        jMenuItem3.setText("Mostrar");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
             }
         });
-        Platillos.add(jMenuItem3);
-        Platillos.add(jSeparator3);
+        Ordenes.add(jMenuItem3);
 
-        jMenuItem4.setText("Mostrar");
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        jmenuCancelaciones.setText("Cancelaciones");
+        jmenuCancelaciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                jmenuCancelacionesActionPerformed(evt);
             }
         });
-        Platillos.add(jMenuItem4);
+        Ordenes.add(jmenuCancelaciones);
 
-        jMenuBar2.add(Platillos);
-
-        Ordenes.setText("Ordenes");
         jMenuBar2.add(Ordenes);
 
         VentasT.setText("Ventas T");
+
+        jmenuVentasTotales.setText("Ventas Totales");
+        jmenuVentasTotales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmenuVentasTotalesActionPerformed(evt);
+            }
+        });
+        VentasT.add(jmenuVentasTotales);
+
+        jmenuReportes.setText("Reportes de venta");
+        jmenuReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jmenuReportesActionPerformed(evt);
+            }
+        });
+        VentasT.add(jmenuReportes);
+
         jMenuBar2.add(VentasT);
 
         setJMenuBar(jMenuBar2);
@@ -249,9 +178,7 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jmcMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jmcMenu)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,50 +189,71 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       guardarDatos();  // Guardar los datos antes de cerrar sesión
-
-        // Cerrar el formulario actual y abrir el de inicio
-        this.setVisible(false);
-        frmInicio ini = new frmInicio(listaUsuarios);
-        ini.setVisible(true);
+       this.setVisible(false);
+      frmInicio ini = new frmInicio(listaUsuarios, colaTotales);
+      ini.setVisible(true);
       
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
     frmRegistroEmpleados em = new frmRegistroEmpleados(listaUsuarios);
     jmcMenu.add(em);
-    em.setVisible(true);    
+    em.setVisible(true);
+    
+        
+        
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
        frmMEmpleados em = new frmMEmpleados(listaUsuarios);
        jmcMenu.add(em);
        em.setVisible(true);
+       
+        
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jmiInventarioMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiInventarioMostrarActionPerformed
-         frmInventarioMostrar em = new frmInventarioMostrar(colaIngredientes);
-         jmcMenu.add(em);
-         em.setVisible(true);
-    }//GEN-LAST:event_jmiInventarioMostrarActionPerformed
-
-    private void jmiInventarioRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmiInventarioRegistrarActionPerformed
-         frmInventarioRegistro em = new frmInventarioRegistro(colaIngredientes);
-         jmcMenu.add(em);
-         em.setVisible(true);
-    }//GEN-LAST:event_jmiInventarioRegistrarActionPerformed
+    private void jcmRegistroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcmRegistroActionPerformed
+        frmOrdenes or = new frmOrdenes(colaTotales);
+        jmcMenu.add(or);
+        or.setVisible(true);
+    }//GEN-LAST:event_jcmRegistroActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        frmPlatilloRegistrar em = new frmPlatilloRegistrar(colaPlatillos);
-        jmcMenu.add(em);
-        em.setVisible(true);
+      
+        frmMOrdenes or = new frmMOrdenes(frmOrdenes.colaTotales);
+        jmcMenu.add(or);
+        or.setVisible(true);  
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        frmPlatilloMostrar em = new frmPlatilloMostrar(colaPlatillos);
-        jmcMenu.add(em);
-        em.setVisible(true);
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+    private void jmenuCancelacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmenuCancelacionesActionPerformed
+//        frmMCancelaciones cm = new frmMCancelaciones();
+//        jmcMenu.add(cm);
+//        cm.setVisible(true);
+
+
+    frmMCancelaciones cm = new frmMCancelaciones();
+    jmcMenu.add(cm);
+    cm.setVisible(true);
+    try {
+        cm.setSelected(true); // Traer el frame al frente
+    } catch (java.beans.PropertyVetoException e) {
+        e.printStackTrace();
+    }
+
+
+    }//GEN-LAST:event_jmenuCancelacionesActionPerformed
+
+    private void jmenuVentasTotalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmenuVentasTotalesActionPerformed
+        frmMVentasTotales vt = new frmMVentasTotales();
+        jmcMenu.add(vt);
+        vt.setVisible(true);
+    }//GEN-LAST:event_jmenuVentasTotalesActionPerformed
+
+    private void jmenuReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jmenuReportesActionPerformed
+//        frmMReportesVentas rt = new frmMReportesVentas();
+//        jmcMenu.add(rt);
+//        rt.setVisible(true);
+    }//GEN-LAST:event_jmenuReportesActionPerformed
     
     /**
      * @param args the command line arguments
@@ -315,44 +263,55 @@ public class frmMenuPrincipal extends javax.swing.JFrame implements Runnable {
     public static javax.swing.JMenu Empleados;
     public static javax.swing.JMenu Inventario;
     public static javax.swing.JMenu Ordenes;
-    public static javax.swing.JMenu Platillos;
     public static javax.swing.JMenu VentasT;
     private javax.swing.JButton jButton1;
     public static javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JPopupMenu.Separator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JMenuItem jcmRegistro;
     public static javax.swing.JDesktopPane jmcMenu;
-    private javax.swing.JMenuItem jmiInventarioMostrar;
-    private javax.swing.JMenuItem jmiInventarioRegistrar;
+    private javax.swing.JMenuItem jmenuCancelaciones;
+    private javax.swing.JMenuItem jmenuReportes;
+    private javax.swing.JMenuItem jmenuVentasTotales;
     private javax.swing.JLabel lblReloj;
     // End of variables declaration//GEN-END:variables
 
-    
+    @Override
+    public void run() {
+        
+        Thread ct = Thread.currentThread();
+
+        while (ct == h1) {
+            calcula();
+            lblReloj.setText(hora + ":" + min + ":" + seg + " " + ampm);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException error) {
+            }
+        }
+
+
+    }
 
     private void calcula() {
-        Calendar calendario = new GregorianCalendar();
-        Date fechaHoraActual = new Date();
-        calendario.setTime(fechaHoraActual);
+         Calendar calendario = new GregorianCalendar();
+        Date fechaHoraactual = new Date();
+        calendario.setTime(fechaHoraactual);
         ampm = calendario.get(Calendar.AM_PM) == Calendar.AM ? "AM" : "PM";
-
-        // Calcular la hora en formato de 12 horas
         if (ampm.equals("PM")) {
             int h = calendario.get(Calendar.HOUR_OF_DAY) - 12;
-            if (h == 0) {
-                hora = "12"; // Caso especial para la medianoche
-            } else {
-                hora = h > 9 ? "" + h : "0" + h; // Formato de hora (sin el 0 inicial)
-            }
+            hora = h > 9 ? "" + h : "0" + h;
+            if(h==00){
+                   hora="12";
+             }else{
+                   hora=h>9?""+h:"0"+h;
+             }      
         } else {
             hora = calendario.get(Calendar.HOUR_OF_DAY) > 9 ? "" + calendario.get(Calendar.HOUR_OF_DAY) : "0" + calendario.get(Calendar.HOUR_OF_DAY);
         }
-
         min = calendario.get(Calendar.MINUTE) > 9 ? "" + calendario.get(Calendar.MINUTE) : "0" + calendario.get(Calendar.MINUTE);
         seg = calendario.get(Calendar.SECOND) > 9 ? "" + calendario.get(Calendar.SECOND) : "0" + calendario.get(Calendar.SECOND);
+
     }
 }
